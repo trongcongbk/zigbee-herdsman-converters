@@ -58,7 +58,7 @@ module.exports = [
         },
     },
     {
-        zigbeeModel: ['TS0003'],
+        zigbeeModel: ['TS00031'],//CongNT16: Change from zigbeeModel: ['TS0003'],
         model: 'ZM-L03E-Z',
         vendor: 'Zemismart',
         description: 'Smart light switch - 3 gang with neutral wire',

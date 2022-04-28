@@ -1265,6 +1265,7 @@ module.exports = [
     },
     {
         fingerprint: [{modelID: 'TS0003', manufacturerName: '_TZ3000_vsasbzkf'},
+            {modelID: 'TS0003', manufacturerName: '_TZ3000_anwoqhkd'},
             {modelID: 'TS0003', manufacturerName: '_TZ3000_odzoiovu'}],
         model: 'TS0003_switch_module',
         vendor: 'TuYa',
@@ -1273,14 +1274,14 @@ module.exports = [
         toZigbee: extend.switch().toZigbee.concat([tz.moes_power_on_behavior, tz.tuya_switch_type]),
         fromZigbee: extend.switch().fromZigbee.concat([fz.moes_power_on_behavior, fz.tuya_switch_type]),
         exposes: [
-            e.switch().withEndpoint('l1'),
-            e.switch().withEndpoint('l2'),
+            e.switch().withEndpoint('left'),
+            e.switch().withEndpoint('center'),
             e.switch().withEndpoint('l3'),
             exposes.presets.power_on_behavior(),
             exposes.presets.switch_type_2(),
         ],
         endpoint: (device) => {
-            return {'l1': 1, 'l2': 2, 'l3': 3};
+            return {'left': 1, 'center': 2, 'right': 3};
         },
         meta: {multiEndpoint: true},
         configure: async (device, coordinatorEndpoint, logger) => {
