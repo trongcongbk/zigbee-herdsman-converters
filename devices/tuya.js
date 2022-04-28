@@ -397,6 +397,17 @@ module.exports = [
         exposes: extend.switch().exposes.concat([e.power_on_behavior(), e.switch_type_2()]),
         configure: async (device, coordinatorEndpoint, logger) => {
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
+
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
         },
     },
     {
@@ -568,7 +579,9 @@ module.exports = [
         },
     },
     {
-        fingerprint: [{modelID: 'TS0202', manufacturerName: '_TZ3000_msl6wxk9'}],
+        fingerprint: [{modelID: 'TS0202', manufacturerName: '_TZ3000_mcxw5ehu'},
+            {modelID: 'TS0202', manufacturerName: '_TZ3000_od1nj6bz'},
+            {modelID: 'TS0202', manufacturerName: '_TZ3000_msl6wxk9'}],
         model: 'ZM-35H-Q',
         vendor: 'TuYa',
         description: 'Motion sensor',
@@ -1114,6 +1127,17 @@ module.exports = [
             {vendor: 'Bandi', model: 'BDS03G1'}],
         configure: async (device, coordinatorEndpoint, logger) => {
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
+
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
         },
     },
     {
@@ -1133,6 +1157,17 @@ module.exports = [
             await ep1.read('genBasic', ['manufacturerName', 'zclVersion', 'appVersion', 'modelId', 'powerSource', 0xfffe]);
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
             await reporting.bind(device.getEndpoint(2), coordinatorEndpoint, ['genOnOff']);
+
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
         },
     },
     {
@@ -1149,6 +1184,17 @@ module.exports = [
         ]),
         configure: async (device, coordinatorEndpoint, logger) => {
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
+
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
         },
     },
     {
@@ -1172,6 +1218,18 @@ module.exports = [
         configure: async (device, coordinatorEndpoint, logger) => {
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
             await reporting.bind(device.getEndpoint(2), coordinatorEndpoint, ['genOnOff']);
+
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
+            
         },
     },
     {
@@ -1193,6 +1251,16 @@ module.exports = [
         configure: async (device, coordinatorEndpoint, logger) => {
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
             await reporting.bind(device.getEndpoint(2), coordinatorEndpoint, ['genOnOff']);
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
         },
     },
     {
@@ -1219,6 +1287,17 @@ module.exports = [
             await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genOnOff']);
             await reporting.bind(device.getEndpoint(2), coordinatorEndpoint, ['genOnOff']);
             await reporting.bind(device.getEndpoint(3), coordinatorEndpoint, ['genOnOff']);
+
+            //CongNT16: Add reporting
+            await reporting.bind(device.getEndpoint(1), coordinatorEndpoint, ['genBasic']);
+            const endpoint = device.getEndpoint(1);
+            const p = {
+                attribute: 'zclVersion',
+                minimumReportInterval: 60,
+                maximumReportInterval: 240,
+                reportableChange: 0,
+            }
+            await endpoint.configureReporting('genBasic',[p]);
         },
     },
     {
