@@ -2318,13 +2318,19 @@ module.exports = [
         ],
     },
     {
-        fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE200_vrfecyku'}],
+        fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE200_vrfecyku'},
+                      {modelID: 'TS0601', manufacturerName: '_TZE200_46ahxhi8'}],
         model: 'MIR-HE200-TY',
         vendor: 'TuYa',
         description: 'Human presence sensor',
         fromZigbee: [fz.tuya_radar_sensor],
         toZigbee: [tz.tuya_radar_sensor],
         exposes: [
+            //CongNT16 add
+            exposes.text('radar_id', ea.STATE).withDescription('Radar ID'),
+            exposes.text('HW_version', ea.STATE).withDescription('HW Version'),
+            exposes.text('SW_version', ea.STATE).withDescription('SW Version'),
+            exposes.text('reset_flag', ea.STATE).withDescription('Reset flag'),
             e.illuminance_lux(), e.presence(), e.occupancy(),
             exposes.numeric('motion_speed', ea.STATE).withDescription('Speed of movement'),
             exposes.enum('motion_direction', ea.STATE, Object.values(tuya.tuyaRadar.motionDirection))
@@ -2333,6 +2339,13 @@ module.exports = [
                 .withDescription('sensitivity of the radar'),
             exposes.enum('radar_scene', ea.STATE_SET, Object.values(tuya.tuyaRadar.radarScene))
                 .withDescription('presets for sensitivity for presence and movement'),
+            exposes.numeric('fall_sensitivity', ea.STATE_SET).withValueMin(1).withValueMax(10).withValueStep(1)
+                .withDescription('fall sensitivity of the radar'),
+            exposes.enum('fall_down_status', ea.STATE, Object.values(tuya.tuyaRadar.fallDown))
+                .withDescription('fall down status'),
+            exposes.numeric('tumble_alarm_time', ea.STATE_SET).withValueMin(1).withValueMax(5).withValueStep(1)
+                .withUnit('min').withDescription('tumble alarm time'),
+            exposes.enum('tumble_switch', ea.STATE_SET, ['ON', 'OFF']).withDescription('Tumble status switch'),
         ],
     },
     {
@@ -2550,6 +2563,7 @@ module.exports = [
     {
         fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE200_ikvncluo'},
             {modelID: 'TS0601', manufacturerName: '_TZE200_lyetpprm'},
+            //{modelID: 'TS0601', manufacturerName: '_TZE200_46ahxhi8'},
             {modelID: 'TS0601', manufacturerName: '_TZE200_ztc6ggyl'}],
         model: 'TS0601_smart_human_presense_sensor',
         vendor: 'TuYa',

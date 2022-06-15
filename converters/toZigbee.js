@@ -6693,7 +6693,7 @@ const converters = {
         },
     },
     tuya_radar_sensor: {
-        key: ['radar_scene', 'radar_sensitivity'],
+        key: ['radar_scene', 'radar_sensitivity', 'fall_sensitivity','tumble_alarm_time', 'tumble_switch'],
         convertSet: async (entity, key, value, meta) => {
             switch (key) {
             case 'radar_scene':
@@ -6701,6 +6701,15 @@ const converters = {
                 break;
             case 'radar_sensitivity':
                 await tuya.sendDataPointValue(entity, tuya.dataPoints.trsSensitivity, value);
+                break;
+            case 'fall_sensitivity':
+                await tuya.sendDataPointValue(entity, tuya.dataPoints.trsFallSensitivity, value);
+                break;
+            case 'tumble_switch':
+                await tuya.sendDataPointEnum(entity, tuya.dataPoints.trsTumbleSwitch, {'on': true, 'off': false}[value.toLowerCase()]);
+                break;
+            case 'tumble_alarm_time':
+                await tuya.sendDataPointEnum(entity, tuya.dataPoints.trsTumbleAlarmTime, value-1);
                 break;
             default: // Unknown Key
                 meta.logger.warn(`toZigbee.tuya_radar_sensor: Unhandled Key ${key}`);

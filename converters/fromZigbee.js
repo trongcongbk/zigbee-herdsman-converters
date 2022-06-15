@@ -7919,6 +7919,31 @@ const converters = {
             case tuya.dataPoints.trsIlluminanceLux:
                 result = {illuminance_lux: value};
                 break;
+            //CongNT16 add
+            case tuya.dataPoints.trsRadarID:
+                result = {radar_id: value};
+                break;
+            case tuya.dataPoints.trsHWVersion:
+                result = {HW_version: value};
+                break;
+            case tuya.dataPoints.trsSWVersion:
+                result = {SW_version: value};
+                break;
+            case tuya.dataPoints.trsFallDownStatus:
+                result = {fall_down_status: value};
+                break;
+            case tuya.dataPoints.trsFallSensitivity:
+                result = {fall_sensitivity: value};
+                break;
+            case tuya.dataPoints.trsResetFlag:
+                result = {reset_flag: value};
+                break;
+            case tuya.dataPoints.trsTumbleAlarmTime:
+                result = {tumble_alarm_time: value};
+                break;
+            case tuya.dataPoints.trsTumbleSwitch:
+                result = {tumble_switch: value};
+                break;
             case tuya.dataPoints.trsDetectionData: // Ignore this, function of this DP is unknown at the moment!
                 break;
             default:
