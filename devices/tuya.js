@@ -2701,4 +2701,42 @@ module.exports = [
             exposes.enum('report', ea.SET, ['REPORT']),
         ],
     },
+    //CongNT16: add Tuya Curtain Robot motor
+    {
+        fingerprint: [
+            {modelID: 'TS0601', manufacturerName: '_TZE200_nw1r9hp6'},
+            {modelID: 'TS0601', manufacturerName: '_TZE200_nw1r9hp7'},
+        ],
+        model: 'TS0601_cover',
+        vendor: 'Tuya',
+        description: 'Tuya Curtain Robot motor',
+        fromZigbee: [fz.tuya_curtain_robot],
+        toZigbee: [tz.tuya_curtain_robot],
+        exposes: [//e.cover_position().setAccess('position', ea.STATE_SET),
+            /*exposes.composite('options', 'options')
+                .withFeature(exposes.numeric('motor_speed', ea.STATE_SET)
+                    .withValueMin(0)
+                    .withValueMax(255)
+                    .withDescription('Motor speed')),*/
+            exposes.enum('control',ea.STATE_SET,Object.values(tuya.tuyaCurtainRobot.tcrControl)),
+            exposes.numeric('position_setting', ea.ALL).withValueMin(0).withValueMax(100).withValueStep(1).withUnit('%'),
+            exposes.numeric('best_position_config', ea.ALL).withValueMin(0).withValueMax(100).withValueStep(1).withUnit('%'),
+            exposes.enum('work_state', ea.STATE, Object.values(tuya.tuyaCurtainRobot.tcrWorkState)),
+            exposes.numeric('current_position', ea.STATE).withValueMin(0).withValueMax(100).withValueStep(1).withUnit('%'),
+            exposes.enum('motor_working_mode', ea.STATE_SET, Object.values(tuya.tuyaCurtainRobot.tcrClickControl)),
+            exposes.enum('mode', ea.STATE_SET, Object.values(tuya.tuyaCurtainRobot.tcrMode)),
+            exposes.enum('motor_direction', ea.STATE_SET, Object.values(tuya.tuyaCurtainRobot.tcrMotorDirection)),
+            exposes.enum('border_setting', ea.STATE_SET, Object.values(tuya.tuyaCurtainRobot.tcrBorder)),
+            exposes.numeric('battery_percentage', ea.STATE).withUnit('%'),
+            exposes.enum('situation_set', ea.STATE, Object.values(tuya.tuyaCurtainRobot.tcrSituationSet)),
+            exposes.binary('fault', ea.STATE),
+        // ---------------------------------------------------------------------------------
+        // DP exists, but not used at the moment
+        // exposes.numeric('percent_control', ea.STATE_SET).withValueMin(0).withValueMax(100).withValueStep(1).withUnit('%'),
+        // exposes.enum('work_state', ea.STATE, Object.values(tuya.ZMAM02.AM02WorkState)),
+        // exposes.numeric('countdown_left', ea.STATE).withUnit('s'),
+        // exposes.numeric('time_total', ea.STATE).withUnit('ms'),
+        // exposes.enum('situation_set', ea.STATE, Object.values(tuya.ZMAM02.AM02Situation)),
+        ],
+    },
 ];

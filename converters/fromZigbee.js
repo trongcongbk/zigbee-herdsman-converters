@@ -8480,6 +8480,132 @@ const converters = {
             }
         },
     },
+    //CongNT16: Add Tuya Curtain Robot motor
+    tuya_curtain_robot: {
+        cluster: 'manuSpecificTuya',
+        type: ['commandDataReport', 'commandDataResponse'],
+        options: [exposes.options.invert_cover()],
+        convert: (model, msg, publish, options, meta) => {
+            const dpValue = tuya.firstDpValue(msg, meta, 'tuya_curtain_robot');
+            const dp = dpValue.dp;
+            const value = tuya.getDataValue(dpValue);
+            switch (dp) {
+            case tuya.dataPoints.tcrCurtainPositionSetting: // Started moving to position (triggered from Zigbee)
+            case tuya.dataPoints.tcrCurrentCurtainPosition: { // Arrived at position
+                /*const running = dp === tuya.dataPoints.tcrCurrentCurtainPosition ? false : true;
+                const invert = tuya.isCoverInverted(meta.device.manufacturerName) ? !options.invert_cover : options.invert_cover;
+                const position = invert ? 100 - (value & 0xFF) : (value & 0xFF);
+                if (position > 0 && position <= 100) {
+                    return {running, position, tcrControl: 'OPEN'};
+                } else if (position == 0) { // Report fully closed
+                    return {running, position, tcrControl: 'CLOSE'};
+                } else {
+                    return {running}; // Not calibrated yet, no position is available
+                }*/
+                return {current_position: value};
+                break;
+            }
+            //case tuya.dataPoints.coverSpeed: // Cover is reporting its current speed setting
+            //   return {motor_speed: value};
+            case tuya.dataPoints.tcrControl: // Ignore the cover state, it's not reliable between different covers!
+            //Need to check
+            case tuya.dataPoints.tcrWorkState: // Ignore manual cover change, it's not reliable between different covers!
+            //Need to check
+                switch (value) {
+                    case 0:
+                        return {work_state: 'opening'};
+                    case 1:
+                        return {work_state: 'stopping'}
+                    case 2: // closing
+                        return {work_state: 'closing'};
+                    default:
+                        meta.logger.warn('zigbee-herdsman-converters:tuya_curtain_robot: ' +
+                            `Mode ${value} is not recognized.`);
+                        break;
+                }
+                break;
+            //case tuya.dataPoints.tcrMotorDirection: // Returned by configuration set; ignore
+            //    break;
+            case tuya.dataPoints.tcrClickControl:
+                switch (value) {
+                case 0: // continuous 1
+                    return {motor_working_mode: 'up'};
+                case 1: // intermittently
+                    return {motor_working_mode: 'down'};
+                default:
+                    meta.logger.warn('tuya_curtain_robot: ' +
+                    `Mode ${value} is not recognized.`);
+                    break;
+                }
+                break;
+            case tuya.dataPoints.tcrBorder:
+                switch (value) {
+                case 0: // up
+                    return {border_setting: 'upper_limit_setting'};
+                case 1: // down
+                    return {border_setting: 'lower_limit_setting'};
+                case 2: // up_delete
+                    return {border_setting: 'remove_upper_limit_setting'};
+                case 3: // down_delete
+                    return {border_setting: 'remove_lower_limit_setting'};
+                case 4: // remove_top_bottom
+                    return {border_setting: 'remove_all_setting'};
+                default:
+                    meta.logger.warn('zigbee-herdsman-converters:tuya_curtain_robot: ' +
+                    `Mode ${value} is not recognized.`);
+                    break;
+                }
+                break;
+            case tuya.dataPoints.tcrMotorDirection:
+                switch (value) {
+                case 0:
+                    return {motor_direction: 'forward'};
+                case 1:
+                    return {motor_direction: 'back'};
+                default:
+                    meta.logger.warn('tuya_curtain_robot: ' +
+                    `Mode ${value} is not recognized.`);
+                    break;
+                }
+                break;
+            case tuya.dataPoints.tcrMode:
+                switch (value) {
+                case 0: // morning
+                    return {mode: 'morning'};
+                case 1: // night
+                    return {mode: 'night'};
+                default:
+                    meta.logger.warn('zigbee-herdsman-converters:tuya_curtain_robot: ' +
+                        `Mode ${value} is not recognized.`);
+                    break;
+                }
+                break;
+            case tuya.dataPoints.tcrSituationSet:
+                switch (value) {
+                case 0: // fully_open
+                    return {situation_set: 'fully_open'};
+                case 1: // fully_close
+                    return {situation_set: 'fully_close'};
+                default:
+                    meta.logger.warn('zigbee-herdsman-converters:tuya_curtain_robot: ' +
+                        `Mode ${value} is not recognized.`);
+                    break;
+                }
+                break;
+            case tuya.dataPoints.tcrBatteryPercentage:
+                return {battery_percentage: value};
+                break;
+            case tuya.dataPoints.tcrFault:
+                return {fault: value};
+                break;
+            default: // Unknown code
+                meta.logger.warn(`tuya_curtain_robot: Unhandled DP #${dp} for ${meta.device.manufacturerName}:
+                    ${JSON.stringify(dpValue)}`);
+            }
+        },
+    },
+    //CongNT16: End of Tuya Curtain Robot motor
+
     tm081: {
         cluster: 'manuSpecificTuya',
         type: ['commandDataReport'],

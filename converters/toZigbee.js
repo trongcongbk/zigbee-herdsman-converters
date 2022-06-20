@@ -7077,6 +7077,74 @@ const converters = {
             }
         },
     },
+    tuya_curtain_robot: {
+        key: ['control', 'position_setting', 'mode', 'motor_direction', 'border_setting', 'motor_working_mode','best_position_config'],
+        options: [exposes.options.invert_cover()],
+        convertSet: async (entity, key, value, meta) => {
+            if (key === 'position_setting') {
+                if (value >= 0 && value <= 100) {
+                    const invert = tuya.isCoverInverted(meta.device.manufacturerName) ?
+                        !meta.options.invert_cover : meta.options.invert_cover;
+
+                    value = invert ? 100 - value : value;
+                    await tuya.sendDataPointValue(entity, tuya.dataPoints.coverPosition, value);
+                } else {
+                    throw new Error('TuYa_cover_control: Curtain motor position is out of range');
+                }
+            } else if (key === 'control') {
+                const stateEnums = tuya.getCoverStateEnums(meta.device.manufacturerName);
+                meta.logger.debug(`tuya_curtain_robot: Using state enums for ${meta.device.manufacturerName}:
+                ${JSON.stringify(stateEnums)}`);
+                value = value.toLowerCase();
+                switch (value) {
+                case 'close':
+                    await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrControl, stateEnums.close);
+                    break;
+                case 'open':
+                    await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrControl, stateEnums.open);
+                    break;
+                case 'stop':
+                    await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrControl, stateEnums.stop);
+                    break;
+                case 'continue':
+                    await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrControl, stateEnums.contine);
+                    break;
+                default:
+                    throw new Error('tuya_curtain_robot: Invalid command received');
+                }
+            }
+            switch (key) {
+            case 'mode':
+                await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrMode, utils.getKey(tuya.tuyaCurtainRobot.tcrMode, value));
+                break;
+            case 'motor_direction':
+                await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrMotorDirection, utils.getKey(tuya.tuyaCurtainRobot.tcrMotorDirection, value));
+                break;
+            case 'border':
+                await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrBorder, utils.getKey(tuya.tuyaCurtainRobot.tcrBorder, value));
+                break;
+            case 'motor_working_mode':
+                await tuya.sendDataPointEnum(
+                    entity,
+                    tuya.dataPoints.tcrClickControl,
+                    utils.getKey(tuya.tuyaCurtainRobot.tcrClickControl,
+                        value));
+                break;
+            case 'best_position_config':
+                if (value >= 0 && value <= 100) {
+                    const invert = tuya.isCoverInverted(meta.device.manufacturerName) ?
+                        !meta.options.invert_cover : meta.options.invert_cover;
+
+                    value = invert ? 100 - value : value;
+                    await tuya.sendDataPointValue(entity, tuya.dataPoints.tcrBestPosition, value);
+                } else {
+                    throw new Error('TuYa_cover_control: Curtain motor position is out of range');
+                }
+                break;
+            }
+            
+        },
+    },
     tuya_smart_human_presense_sensor: {
         key: ['radar_sensitivity', 'minimum_range', 'maximum_range', 'detection_delay', 'fading_time'],
         convertSet: async (entity, key, value, meta) => {
