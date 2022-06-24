@@ -7120,7 +7120,7 @@ const converters = {
             case 'motor_direction':
                 await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrMotorDirection, utils.getKey(tuya.tuyaCurtainRobot.tcrMotorDirection, value));
                 break;
-            case 'border':
+            case 'border_setting':
                 await tuya.sendDataPointEnum(entity, tuya.dataPoints.tcrBorder, utils.getKey(tuya.tuyaCurtainRobot.tcrBorder, value));
                 break;
             case 'motor_working_mode':
